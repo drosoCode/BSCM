@@ -1,0 +1,3 @@
+﻿<modifier-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
+  <modifier text='Enable BSCM' hover-hint='Enable Beat Saber Co-op mode.' src='BSCM.Resources.GamemodeIcon.png' value='isEnabled' apply-on-change='true' />
+</modifier-container>
