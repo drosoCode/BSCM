@@ -7,9 +7,9 @@ Depends on [websocket-sharp](https://github.com/sta/websocket-sharp) for communi
 
 ## Installation
 
-1. In your Beat Saber directory: 
-2. Copy BSCM.dll and websocket-sharp.dll in the Plugins directory
-3. Copy BSCM.json in the UserData directory
+ - In your Beat Saber directory: 
+ - Copy BSCM.dll and websocket-sharp.dll in the Plugins directory
+ - Copy BSCM.json in the UserData directory
 
 ## Configuration
 
@@ -20,5 +20,5 @@ In the BSCM.json file:
 
 ## How to play
 
-You control one saber and your teammate controls the other
-Your must use the same map on the same settings (difficulty and modifiers) and click **Play** at the same time 
+ - You control one saber and your teammate controls the other
+ - Your must use the same map on the same settings (difficulty and modifiers) and click **Play** at the same time 
