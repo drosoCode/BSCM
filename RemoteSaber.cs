@@ -34,7 +34,6 @@ namespace BSCM.Modifiers
                 return;
             }
 
-            Plugin.Multi.startGame();
             Plugin.Log.Info("Coop mod ready!");
         }
     }
@@ -45,7 +44,7 @@ namespace BSCM.Modifiers
     {
         static void Postfix(VRController __instance)
         {
-            Plugin.Log.Info("Method called");
+            // Plugin.Log.Info("Method called");
             if (!PluginConfig.Instance.Enabled)
             {
                 Plugin.Log.Info("Plugin not enabled");
@@ -56,13 +55,13 @@ namespace BSCM.Modifiers
             {
                 if(PluginConfig.Instance.isLeftRemoteSaber)
                 {
-                    Plugin.Log.Info("updating coords");
+                    // Plugin.Log.Info("updating coords");
                     __instance.transform.position = Plugin.Multi.getLatestPosition();
                     __instance.transform.rotation = Plugin.Multi.getLatestRotation();
                 }
                 else
                 {
-                    Plugin.Log.Info("sending coords");
+                    // Plugin.Log.Info("sending coords");
                     Plugin.Multi.sendCoords(__instance.transform.position, __instance.transform.rotation);
                 }
             }
@@ -70,16 +69,26 @@ namespace BSCM.Modifiers
             {
                 if (!PluginConfig.Instance.isLeftRemoteSaber)
                 {
-                    Plugin.Log.Info("updating coords");
+                    // Plugin.Log.Info("updating coords");
                     __instance.transform.position = Plugin.Multi.getLatestPosition();
                     __instance.transform.rotation = Plugin.Multi.getLatestRotation();
                 }
                 else
                 {
-                    Plugin.Log.Info("sending coords");
+                    // Plugin.Log.Info("sending coords");
                     Plugin.Multi.sendCoords(__instance.transform.position, __instance.transform.rotation);
                 }
             }
+        }
+    }
+
+    [HarmonyPatch(typeof(AudioTimeSyncController))]
+    [HarmonyPatch("StartSong")]
+    class AudioTimeSyncControllerPatch
+    {
+        static void Postfix(AudioTimeSyncController __instance)
+        {
+            Plugin.Multi.startSong();
         }
     }
 }

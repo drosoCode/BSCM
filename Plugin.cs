@@ -6,6 +6,7 @@ using System.Runtime.InteropServices;
 using IPALogger = IPA.Logging.Logger;
 using Config = IPA.Config.Config;
 using IPA.Config.Stores;
+using UnityEngine;
 
 [assembly: AssemblyTitle("BSCM")]
 [assembly: AssemblyFileVersion("1.0.0")]
@@ -40,10 +41,7 @@ namespace BSCM
         public void Init(object _, IPALogger log, Config config)
         {
             Log = log;
-            Log.Info("Init");
             PluginConfig.Instance = config.Generated<PluginConfig>();
-            Multi = new Multiplayer();
-            Log.Info("Init End");
         }
 
         [OnStart]
@@ -54,22 +52,32 @@ namespace BSCM
 
             _isInitialized = true;
 
-            try
+
+            if (PluginConfig.Instance.Enabled)
             {
-                var harmony = new Harmony("com.github.drosocode.bscm");
-                harmony.PatchAll(Assembly);
+                try
+                {
+                    var harmony = new Harmony("com.github.drosocode.bscm");
+                    harmony.PatchAll(Assembly);
+                }
+                catch (Exception e)
+                {
+                    Log.Error("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
+                    Log.Error(e.ToString());
+
+                    return;
+                }
+
+                Log.Info("Starting");
+
+                Multi = new Multiplayer();
+
+                //new GameObject("PauseController").AddComponent<PauseController>();
+
+                _gamemode = new Gamemode();
+
+                Log.Info($"v{Version} loaded!");
             }
-            catch (Exception e)
-            {
-                Log.Error("This plugin requires Harmony. Make sure you installed the plugin properly, as the Harmony DLL should have been installed with it.");
-                Log.Error(e.ToString());
-
-                return;
-            }
-
-            _gamemode = new Gamemode();
-
-            Log.Info($"v{Version} loaded!");
         }
 
         [OnExit]

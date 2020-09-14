@@ -21,4 +21,5 @@ In the BSCM.json file:
 ## How to play
 
  - You control one saber and your teammate controls the other
- - Your must use the same map on the same settings (difficulty and modifiers) and click **Play** at the same time 
+ - Your must use the same map on the same settings (difficulty and modifiers)
+ - Click **Play** when you are ready, the game will start when the 2 players are ready 
