@@ -59,7 +59,8 @@ namespace BSCM
                 sendData("start");
                 // wait for estimated latency
                 Plugin.Log.Info("Waiting for latency corretion");
-                Thread.Sleep(Convert.ToInt32(latency));
+                Plugin.Log.Info("Latency: "+latency);
+                // Thread.Sleep(Convert.ToInt32(latency));
                 // start game on server
                 Plugin.Log.Info("Starting server game");
                 setGameStatus(true);
