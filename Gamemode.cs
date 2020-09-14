@@ -4,6 +4,7 @@ using BSCM.Views;
 using System;
 using System.Linq;
 using UnityEngine.SceneManagement;
+using BS_Utils.Gameplay;
 
 namespace BSCM
 {
@@ -25,9 +26,11 @@ namespace BSCM
 
         void OnGameLoaded(Scene loadedScene)
         {
-            var gameCore = loadedScene.GetRootGameObjects().First();
+            if(PluginConfig.Instance.disableSumbission)
+                ScoreSubmission.DisableSubmission("BSCM");
 
-            _remoteSaber = new RemoteSaber(gameCore, 1);
+            var gameCore = loadedScene.GetRootGameObjects().First();
+            _remoteSaber = new RemoteSaber(gameCore);
         }
 
         void OnMenuLoaded()
