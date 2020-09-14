@@ -35,6 +35,9 @@
       <HintPath>D:\Games\SteamLibrary\steamapps\common\Beat Saber\Plugins\BSML.dll</HintPath>
       <Private>False</Private>
     </Reference>
+    <Reference Include="BS_Utils">
+      <HintPath>..\..\..\..\Games\SteamLibrary\steamapps\common\Beat Saber\Plugins\BS_Utils.dll</HintPath>
+    </Reference>
     <Reference Include="HMLib">
       <HintPath>D:\Games\SteamLibrary\steamapps\common\Beat Saber\Beat Saber_Data\Managed\HMLib.dll</HintPath>
       <Private>False</Private>
