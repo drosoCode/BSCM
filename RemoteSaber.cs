@@ -8,7 +8,7 @@ namespace BSCM.Modifiers
         internal static VRController LeftSaber = null;
         internal static VRController RightSaber = null;
 
-        public RemoteSaber(GameObject gameCore, int saberNum)
+        public RemoteSaber(GameObject gameCore)
         {
             Plugin.Log.Info("Setting up coop mod...");
 
