@@ -1,36 +1,59 @@
 ﻿using System;
-using WebSocketSharp;
-using WebSocketSharp.Server;
+using Lidgren.Network;
 using UnityEngine;
 using System.Linq;
 using System.Threading;
 
 namespace BSCM
 {
-    public class MessageReceiver : WebSocketBehavior
-    {
-        protected override void OnMessage(MessageEventArgs e)
-        {
-            Plugin.Multi.parseMessage(e.Data);
-        }
-
-        public void sendData(string data)
-        {
-            Send(data);
-        }
-    }
-
     public class Multiplayer
     {
-        private MessageReceiver receiver = null;
-        private WebSocket ws = null;
-        private bool isServer = false;
+        private NetClient client_connection = null;
+        private NetServer server_connection = null;
+        private bool isServer = PluginConfig.Instance.isServer;
         private Vector3 latestPosition;
         private Quaternion latestRotation;
         private ScoreController ScoreController;
         private SongController SongController;
         private bool clientReady = false;
         private long latency = 0;
+
+        public Multiplayer()
+        {
+            if (isServer)
+            {
+                try
+                {
+                    NetPeerConfiguration config = new NetPeerConfiguration("BSCM");
+                    config.Port = PluginConfig.Instance.port;
+
+                    server_connection = new NetServer(config);
+                    server_connection.Start();
+                }
+                catch
+                {
+                    Plugin.Log.Error("Error while starting Server");
+                }
+                Plugin.Log.Info("Server Ready");
+            }
+            else
+            {
+                try
+                {
+                    var config = new NetPeerConfiguration("BSCM");
+                    client_connection = new NetClient(config);
+                    client_connection.Start();
+                    client_connection.Connect(host: PluginConfig.Instance.url, port: PluginConfig.Instance.port);
+                    Thread.Sleep(1000);
+                    Plugin.Log.Info("Client Ready");
+                }
+                catch
+                {
+                    Plugin.Log.Error("Error while connecting to Server");
+                }
+            }
+            Plugin.Log.Info("Multiplayer Ready !");
+        }
 
         public void startSong()
         {
@@ -52,15 +75,15 @@ namespace BSCM
             {
                 Plugin.Log.Info("Waiting for client");
                 // wait for client to switch to ready state
-                while (!clientReady) { }
+                while (!clientReady) {
+                    checkMessages();
+                }
                 // start game on client
                 Plugin.Log.Info("Starting client game");
                 clientReady = false;
                 sendData("start");
                 // wait for estimated latency
-                Plugin.Log.Info("Waiting for latency corretion");
                 Plugin.Log.Info("Latency: "+latency);
-                // Thread.Sleep(Convert.ToInt32(latency));
                 // start game on server
                 Plugin.Log.Info("Starting server game");
                 setGameStatus(true);
@@ -72,6 +95,28 @@ namespace BSCM
                 sendData("ready");
                 Plugin.Log.Info("Client ready [c]");
             }
+        }
+
+        public Vector3 getLatestPosition()
+        {
+            return latestPosition;
+        }
+        public Quaternion getLatestRotation()
+        {
+            return latestRotation;
+        }
+        public void sendCoords(Vector3 pos, Quaternion rot)
+        {
+            string data = pos.x + ";" + pos.y + ";" + pos.z + ";" + rot.x + ";" + rot.y + ";" + rot.z + ";" + rot.w;
+            sendData(data);
+        }
+
+        public void stop()
+        {
+            if (isServer)
+                server_connection.Shutdown("Plugin Exit");
+            else
+                client_connection.Disconnect("Plugin Exit");
         }
 
         private long getTimestamp()
@@ -93,19 +138,8 @@ namespace BSCM
             }
         }
 
-        public Vector3 getLatestPosition()
+        private void parseMessage(string message)
         {
-            return latestPosition;
-        }
-        public Quaternion getLatestRotation()
-        {
-            return latestRotation;
-        }
-
-        public void parseMessage(string message)
-        {
-            // Plugin.Log.Info("Received message: " + message);
-
             if(isServer && message == "ready")
             {
                 // when client is ready
@@ -141,59 +175,48 @@ namespace BSCM
             }
         }
 
-        public Multiplayer()
+        public void checkMessages()
         {
-            if (PluginConfig.Instance.isServer)
+            NetIncomingMessage message;
+            if(isServer)
             {
-                isServer = true;
-                try
+                while ((message = server_connection.ReadMessage()) != null)
                 {
-                    receiver = new MessageReceiver();
-                    var wssv = new WebSocketServer(PluginConfig.Instance.url);
-                    wssv.AddWebSocketService("/", () => receiver);
-                    wssv.Start();
-                    Plugin.Log.Info("WS Server Ready");
+                    if (message.MessageType == NetIncomingMessageType.Data)
+                        parseMessage(message.ReadString());
+                    else
+                        Plugin.Log.Debug(message.MessageType.ToString() + ":" + message.ReadString());
                 }
-                catch
-                {
-                    Plugin.Log.Error("Error while starting WS Server");
-                }
-                //Console.ReadKey(true);
-                //wssv.Stop();
             }
             else
             {
-                try
+                while ((message = client_connection.ReadMessage()) != null)
                 {
-                    ws = new WebSocket(PluginConfig.Instance.url);
-                    ws.OnMessage += (sender, e) =>
-                        parseMessage(e.Data);
-
-                    ws.Connect();
-                    Plugin.Log.Info("WS Client Ready");
-                }
-                catch
-                {
-                    Plugin.Log.Error("Error while connecting to WS Server");
+                    if (message.MessageType == NetIncomingMessageType.Data)
+                        parseMessage(message.ReadString());
+                    else
+                        Plugin.Log.Debug(message.MessageType.ToString() + ":" + message.ReadString());
                 }
             }
-
-            Plugin.Log.Info("New Multiplayer");
-        }
-
-        public void sendCoords(Vector3 pos, Quaternion rot)
-        {
-            string data = pos.x + ";" + pos.y + ";" + pos.z + ";" + rot.x + ";" + rot.y + ";" + rot.z + ";" + rot.w;
-            // Plugin.Log.Info("Sending data: " + data);
-            sendData(data);
         }
 
         private void sendData(string data)
         {
             if (isServer)
-                receiver.sendData(data);
+            {
+                NetOutgoingMessage msg = server_connection.CreateMessage();
+                msg.Write(data);
+                if (server_connection.Connections.Count > 0)
+                    server_connection.SendMessage(msg, server_connection.Connections[0], NetDeliveryMethod.ReliableOrdered);
+                else
+                    Plugin.Log.Critical("Client not connected");
+            }
             else
-                ws.Send(data);
+            {
+                NetOutgoingMessage msg = client_connection.CreateMessage();
+                msg.Write(data);
+                client_connection.SendMessage(msg, NetDeliveryMethod.ReliableOrdered);
+            }
         }
 
     }
