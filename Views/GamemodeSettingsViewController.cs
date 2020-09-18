@@ -11,6 +11,7 @@ namespace BSCM.Views
         public override string ResourceName => Resource;
 
         public event EventHandler IsEnabledChanged;
+        public event EventHandler SettingChanged;
 
         [UIValue("isEnabled")]
         public bool IsEnabled
@@ -20,6 +21,27 @@ namespace BSCM.Views
             {
                 PluginConfig.Instance.Enabled = value;
                 IsEnabledChanged?.Invoke(this, EventArgs.Empty);
+            }
+        }
+
+        [UIValue("disableSumbission")]
+        public bool disableSumbission
+        {
+            get => PluginConfig.Instance.Enabled;
+            set
+            {
+                PluginConfig.Instance.disableSumbission = value;
+            }
+        }
+
+        [UIValue("isLeftRemoteSaber")]
+        public bool isLeftRemoteSaber
+        {
+            get => PluginConfig.Instance.isLeftRemoteSaber;
+            set
+            {
+                PluginConfig.Instance.isLeftRemoteSaber = value;
+                SettingChanged?.Invoke(this, EventArgs.Empty);
             }
         }
     }
