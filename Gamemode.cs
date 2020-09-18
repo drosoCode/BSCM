@@ -37,14 +37,13 @@ namespace BSCM
         {
             _gamemodeSettingsView = new GamemodeSettingsViewController();
             _gamemodeSettingsView.IsEnabledChanged += OnGamemodeToggled;
+            _gamemodeSettingsView.SettingChanged += onSettingChanged;
 
             GameplaySetup.instance.AddTab(
                 "BSCM",
                 GamemodeSettingsViewController.Resource,
                 _gamemodeSettingsView
             );
-
-            UpdateCapability();
         }
 
         void OnGamemodeToggled(object sender, EventArgs e)
@@ -52,12 +51,27 @@ namespace BSCM
             UpdateCapability();
         }
 
-        void UpdateCapability()
+        void onSettingChanged(object sender, EventArgs e)
         {
-            if (PluginConfig.Instance.Enabled)
+            // reload multiplayer
+            UpdateCapability(0);
+            UpdateCapability(1);
+        }
+
+        void UpdateCapability(int status = -1)
+        {
+            if (status == 1 || (PluginConfig.Instance.Enabled && status != 0))
+            {
                 SongCore.Collections.RegisterCapability(Plugin.CapabilityName);
+                Plugin.Multi = null;
+                Plugin.Multi = new Multiplayer();
+            }
             else
+            {
                 SongCore.Collections.DeregisterizeCapability(Plugin.CapabilityName);
+                if (Plugin.Multi != null)
+                    Plugin.Multi.stop();
+            }
         }
     }
 }

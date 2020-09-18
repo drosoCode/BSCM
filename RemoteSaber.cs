@@ -10,7 +10,7 @@ namespace BSCM.Modifiers
 
         public RemoteSaber(GameObject gameCore)
         {
-            Plugin.Log.Info("Setting up coop mod...");
+            Plugin.Log.Info("Searching Sabers ...");
 
             var saberManagerObj = gameCore.transform
                 .Find("Origin")
@@ -19,7 +19,7 @@ namespace BSCM.Modifiers
 
             if (saberManagerObj == null)
             {
-                Plugin.Log.Critical("Couldn't find SaberManager, bailing!");
+                Plugin.Log.Critical("Couldn't find SaberManager !");
                 return;
             }
 
@@ -30,11 +30,11 @@ namespace BSCM.Modifiers
 
             if (LeftSaber is null || RightSaber is null)
             {
-                Plugin.Log.Critical("Sabers cannot be found. Bailing!");
+                Plugin.Log.Critical("Sabers cannot be found !");
                 return;
             }
 
-            Plugin.Log.Info("Coop mod ready!");
+            Plugin.Log.Info("Sabers Found !");
         }
     }
 
@@ -44,24 +44,22 @@ namespace BSCM.Modifiers
     {
         static void Postfix(VRController __instance)
         {
-            // Plugin.Log.Info("Method called");
             if (!PluginConfig.Instance.Enabled)
             {
                 Plugin.Log.Info("Plugin not enabled");
                 return;
             }
 
+            Plugin.Multi.checkMessages();
             if (ReferenceEquals(__instance, RemoteSaber.LeftSaber))
             {
                 if(PluginConfig.Instance.isLeftRemoteSaber)
                 {
-                    // Plugin.Log.Info("updating coords");
                     __instance.transform.position = Plugin.Multi.getLatestPosition();
                     __instance.transform.rotation = Plugin.Multi.getLatestRotation();
                 }
                 else
                 {
-                    // Plugin.Log.Info("sending coords");
                     Plugin.Multi.sendCoords(__instance.transform.position, __instance.transform.rotation);
                 }
             }
@@ -69,13 +67,11 @@ namespace BSCM.Modifiers
             {
                 if (!PluginConfig.Instance.isLeftRemoteSaber)
                 {
-                    // Plugin.Log.Info("updating coords");
                     __instance.transform.position = Plugin.Multi.getLatestPosition();
                     __instance.transform.rotation = Plugin.Multi.getLatestRotation();
                 }
                 else
                 {
-                    // Plugin.Log.Info("sending coords");
                     Plugin.Multi.sendCoords(__instance.transform.position, __instance.transform.rotation);
                 }
             }
