@@ -1,7 +1,8 @@
 {
   "Enabled": true,
   "disableSubmission": true,
-  "url": "ws://192.168.1.9",
+  "url": "192.168.1.9",
+  "port": 14242,
   "isServer": true,
   "isLeftRemoteSaber": false
 }
