@@ -3,7 +3,7 @@
 A co-op mod for Beat Saber
 
 Based on [BeatSaber-Claws](https://github.com/SteffanDonal/BeatSaber-Claws)
-Depends on [websocket-sharp](https://github.com/sta/websocket-sharp) for communication
+Depends on [lidgren-network](https://github.com/lidgren/lidgren-network-gen3) for communication
 
 ## Installation
 
