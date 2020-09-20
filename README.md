@@ -3,7 +3,7 @@
 A co-op mod for Beat Saber
 
 Based on [BeatSaber-Claws](https://github.com/SteffanDonal/BeatSaber-Claws)
-Depends on [websocket-sharp](https://github.com/sta/websocket-sharp) for communication
+Depends on [lidgren-network](https://github.com/lidgren/lidgren-network-gen3) for communication
 
 ## Installation
 
@@ -14,10 +14,12 @@ Depends on [websocket-sharp](https://github.com/sta/websocket-sharp) for communi
 ## Configuration
 
 In the BSCM.json file:
- - url is the websocket url (binding url for server mode (use your computer's local ip) and server url for client mode (use the public ip of your teammate in server mode))
+ - url is the server url (only for client mode, use the public ip of your teammate in server mode)
+ - port is the server port
  - isServer is client or server mode selection (you must set this to true for one user and to false for the other, a port forwarding is mandatory for the user in server mode)
  - isLeftRemoteSaber is the saber controlled by your teammate, if true this is the left saber (you must set this to true for one user and to false for the other)
-
+ - disableSubmission permits to disable score submission when playing with this mod
+ 
 ## How to play
 
  - You control one saber and your teammate controls the other
