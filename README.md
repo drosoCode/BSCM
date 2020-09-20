@@ -15,7 +15,7 @@ Depends on [lidgren-network](https://github.com/lidgren/lidgren-network-gen3) fo
 
 In the BSCM.json file:
  - url is the server url (only for client mode, use the public ip of your teammate in server mode)
- - port is the server port
+ - port is the server port (if you are in server mode, you must setup a port forwarding on your router)
  - isServer is client or server mode selection (you must set this to true for one user and to false for the other, a port forwarding is mandatory for the user in server mode)
  - isLeftRemoteSaber is the saber controlled by your teammate, if true this is the left saber (you must set this to true for one user and to false for the other)
  - disableSubmission permits to disable score submission when playing with this mod
