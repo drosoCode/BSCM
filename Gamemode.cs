@@ -26,11 +26,14 @@ namespace BSCM
 
         void OnGameLoaded(Scene loadedScene)
         {
-            if(PluginConfig.Instance.disableSumbission)
-                ScoreSubmission.DisableSubmission("BSCM");
+            if(PluginConfig.Instance.Enabled)
+            {
+                if (PluginConfig.Instance.disableSumbission)
+                    ScoreSubmission.DisableSubmission("BSCM");
 
-            var gameCore = loadedScene.GetRootGameObjects().First();
-            _remoteSaber = new RemoteSaber(gameCore);
+                var gameCore = loadedScene.GetRootGameObjects().First();
+                _remoteSaber = new RemoteSaber(gameCore);
+            }
         }
 
         void OnMenuLoaded()

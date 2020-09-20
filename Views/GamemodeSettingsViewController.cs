@@ -34,6 +34,16 @@ namespace BSCM.Views
             }
         }
 
+        [UIValue("disableRumble")]
+        public bool disableRumble
+        {
+            get => PluginConfig.Instance.disableRumble;
+            set
+            {
+                PluginConfig.Instance.disableRumble = value;
+            }
+        }
+
         [UIValue("isLeftRemoteSaber")]
         public bool isLeftRemoteSaber
         {

@@ -88,6 +88,7 @@
     <Compile Include="PluginConfig.cs" />
     <Compile Include="ReflectionUtility.cs" />
     <Compile Include="RemoteSaber.cs" />
+    <Compile Include="RumblePatches.cs" />
     <Compile Include="Views\GamemodeSettingsViewController.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -104,6 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Resources\left.png" />
+    <Content Include="Resources\rumble.png" />
     <Content Include="Resources\score.png" />
   </ItemGroup>
   <ItemGroup>

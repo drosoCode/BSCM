@@ -46,7 +46,6 @@ namespace BSCM.Modifiers
         {
             if (!PluginConfig.Instance.Enabled)
             {
-                Plugin.Log.Info("Plugin not enabled");
                 return;
             }
 
@@ -84,7 +83,8 @@ namespace BSCM.Modifiers
     {
         static void Postfix(AudioTimeSyncController __instance)
         {
-            Plugin.Multi.startSong();
+            if (PluginConfig.Instance.Enabled)
+                Plugin.Multi.startSong();
         }
     }
 }

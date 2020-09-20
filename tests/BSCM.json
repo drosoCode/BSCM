@@ -1,8 +1,9 @@
 {
   "Enabled": true,
-  "disableSubmission": true,
+  "disableSumbission": true,
   "url": "192.168.1.9",
   "port": 14242,
   "isServer": true,
-  "isLeftRemoteSaber": false
+  "disableRumble": true,
+  "isLeftRemoteSaber": true
 }
