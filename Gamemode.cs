@@ -28,9 +28,7 @@ namespace BSCM
         {
             if(PluginConfig.Instance.Enabled)
             {
-                if (PluginConfig.Instance.disableSumbission)
-                    ScoreSubmission.DisableSubmission("BSCM");
-
+                ScoreSubmission.DisableSubmission("BSCM");
                 var gameCore = loadedScene.GetRootGameObjects().First();
                 _remoteSaber = new RemoteSaber(gameCore);
             }
@@ -65,13 +63,11 @@ namespace BSCM
         {
             if (status == 1 || (PluginConfig.Instance.Enabled && status != 0))
             {
-                SongCore.Collections.RegisterCapability(Plugin.CapabilityName);
                 Plugin.Multi = null;
                 Plugin.Multi = new Multiplayer();
             }
             else
             {
-                SongCore.Collections.DeregisterizeCapability(Plugin.CapabilityName);
                 if (Plugin.Multi != null)
                     Plugin.Multi.stop();
             }

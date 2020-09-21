@@ -4,7 +4,6 @@
     {
         public static PluginConfig Instance { get; set; }
         public bool Enabled { get; set; }
-        public bool disableSumbission { get; set; }
         public string url { get; set; }
         public int port { get; set; }
         public bool isServer { get; set; }
