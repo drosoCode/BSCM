@@ -1,6 +1,5 @@
 ﻿<modifier-container xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'>
   <modifier text='Enable BSCM' hover-hint='Enable Beat Saber co-op mode.' src='BSCM.Resources.GamemodeIcon.png' value='isEnabled' apply-on-change='true' />
-  <modifier text='Disable Score Submission' hover-hint='Disable your score submission' src='BSCM.Resources.score.png' value='disableSumbission' apply-on-change='true' />
   <modifier text='Disable Rumble' hover-hint='Disable rumble when remote saber is hitting notes' src='BSCM.Resources.rumble.png' value='disableRumble' apply-on-change='true' />
   <modifier text='Left Remote Saber' hover-hint='Select left or right remote saber' src='BSCM.Resources.left.png' value='isLeftRemoteSaber' apply-on-change='true' />
 </modifier-container>

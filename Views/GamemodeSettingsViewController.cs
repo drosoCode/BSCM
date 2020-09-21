@@ -24,16 +24,6 @@ namespace BSCM.Views
             }
         }
 
-        [UIValue("disableSumbission")]
-        public bool disableSumbission
-        {
-            get => PluginConfig.Instance.Enabled;
-            set
-            {
-                PluginConfig.Instance.disableSumbission = value;
-            }
-        }
-
         [UIValue("disableRumble")]
         public bool disableRumble
         {

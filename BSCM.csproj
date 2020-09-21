@@ -106,7 +106,6 @@
   <ItemGroup>
     <Content Include="Resources\left.png" />
     <Content Include="Resources\rumble.png" />
-    <Content Include="Resources\score.png" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Properties\" />
