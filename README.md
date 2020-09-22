@@ -2,11 +2,11 @@
 
 A co-op mod for Beat Saber
 
-Based on [BeatSaber-Claws](https://github.com/SteffanDonal/BeatSaber-Claws)
-Depends on [lidgren-network](https://github.com/lidgren/lidgren-network-gen3) for communication
+Based on [BeatSaber-Claws](https://github.com/SteffanDonal/BeatSaber-Claws). Depends on [lidgren-network](https://github.com/lidgren/lidgren-network-gen3) for communication
 
 ## Installation
 
+ - Requirements: BSIPA, BS_Utils, BSML
  - Download latest release [here](https://github.com/drosoCode/BSCM/releases)
  - Extract the zip in your Beat Saber directory
  - Edit the BSCM.json file in the UserData directory
